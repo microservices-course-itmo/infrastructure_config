@@ -1,0 +1,54 @@
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>serviceName</name>
+          <description>Имя сервиса</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>test-service</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>versionOrBranch</name>
+          <description>Необходимо ввести номер версии ИЛИ название ветки</description>
+          <defaultValue>master</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>environmentRepo</name>
+          <description>Адрес репозитория с файлами, в которых содержатся переменные окружения для сервисов. В случае выбора &quot;Custom&quot; следует загрузить файл в поле ниже вручную</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>https://raw.githubusercontent.com/valtornist99/test-env/master</string>
+              <string>Custom</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.FileParameterDefinition>
+          <name>environment/service-env</name>
+          <description>Если в качестве значения environmentRepo будет выбрано &quot;Custom&quot;, то переменные окружения для сервиса будут взяты из загруженного в данное поле файла</description>
+        </hudson.model.FileParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>/home/run-service.sh $serviceName $versionOrBranch $environmentRepo</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
