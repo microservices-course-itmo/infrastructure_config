@@ -23,6 +23,7 @@ fi
 environment=$(echo "$envFileContent" | sed 's/\r$//' | awk -F " " '{print "--env "$1"="$2}' ORS=' ')
 echo "Environment: $environment"
 
+docker service rm ${serviceName}
 docker service create --network default_network --replicas 1 --name $serviceName $environment ${dockerRepoHost}/${serviceName}:${tag}
 }
 

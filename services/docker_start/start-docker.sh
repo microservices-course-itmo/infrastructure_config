@@ -18,6 +18,8 @@ firewall-cmd --add-port=7946/udp --permanent
 firewall-cmd --add-port=4789/udp --permanent
 firewall-cmd --reload
 
+docker plugin install vieux/sshfs
+
 echo "{ \"insecure-registries\":[\"${dockerRepoHost}\"] }" > /etc/docker/daemon.json
 
 systemctl restart docker

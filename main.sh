@@ -1,5 +1,7 @@
 #!/bin/bash
 
+yum install -y java-1.8.0-openjdk
+
 chmod u+x services/*_start/start-*.sh
 
 ./services/docker_start/start-*.sh
