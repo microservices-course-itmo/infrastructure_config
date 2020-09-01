@@ -10,7 +10,7 @@
           <description>Имя сервиса</description>
           <choices class="java.util.Arrays$ArrayList">
             <a class="string-array">
-              SERVICE_NAMES
+              SERVICE_NAME
             </a>
           </choices>
         </hudson.model.ChoiceParameterDefinition>
@@ -50,5 +50,12 @@
     </hudson.tasks.Shell>
   </builders>
   <publishers/>
-  <buildWrappers/>
+  <buildWrappers>
+    <hudson.plugins.build__timeout.BuildTimeoutWrapper plugin="build-timeout@1.20">
+      <strategy class="hudson.plugins.build_timeout.impl.AbsoluteTimeOutStrategy">
+        <timeoutMinutes>15</timeoutMinutes>
+      </strategy>
+      <operationList/>
+    </hudson.plugins.build__timeout.BuildTimeoutWrapper>
+  </buildWrappers>
 </project>

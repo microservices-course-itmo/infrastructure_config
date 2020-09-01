@@ -16,7 +16,8 @@ RUN usermod -aG docker jenkins
 RUN apt update &&\ 
 apt install -y maven &&\ 
 apt install -y git &&\
-apt install -y jq
+apt install -y jq &&\
+apt install -y libxml2-utils
 
 
 ENV JENKINS_OPTS=--httpPort=8090

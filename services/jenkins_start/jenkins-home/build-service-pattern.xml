@@ -7,7 +7,7 @@
   <scm class="hudson.plugins.git.GitSCM" plugin="git@4.3.0">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
-      GITHUB_REPOS
+      GITHUB_REPO
     </userRemoteConfigs>
     <branches>
       BRANCHES
@@ -35,5 +35,12 @@
     </hudson.tasks.Shell>
   </builders>
   <publishers/>
-  <buildWrappers/>
+  <buildWrappers>
+    <hudson.plugins.build__timeout.BuildTimeoutWrapper plugin="build-timeout@1.20">
+      <strategy class="hudson.plugins.build_timeout.impl.AbsoluteTimeOutStrategy">
+        <timeoutMinutes>15</timeoutMinutes>
+      </strategy>
+      <operationList/>
+    </hudson.plugins.build__timeout.BuildTimeoutWrapper>
+  </buildWrappers>
 </project>

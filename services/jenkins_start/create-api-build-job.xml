@@ -7,13 +7,13 @@
       <parameterDefinitions>
         <hudson.model.StringParameterDefinition>
           <name>githubRepo</name>
-          <description>Репозиторий сервиса</description>
+          <description>Репозиторий API</description>
           <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>password</name>
-          <description>Пароль команды, работающей над сервисом в указанном репозитории</description>
+          <description>Пароль команды, работающей над API в указанном репозитории</description>
           <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
@@ -29,7 +29,7 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>/home/create-deployment-jobs.sh $githubRepo $password</command>
+      <command>/home/create-api-build-job.sh $githubRepo $password</command>
       <configuredLocalRules/>
     </hudson.tasks.Shell>
   </builders>
