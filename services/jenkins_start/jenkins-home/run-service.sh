@@ -17,7 +17,7 @@ then
 envFileContent=$(cat /var/jenkins_home/workspace/test/environment/service-env)
 else
 echo "Environment repository: $environmentRepo"
-envFileContent=$(curl ${environmentRepo}/${serviceName}/${serviceName} 2> /dev/null)
+envFileContent=$(curl -H 'Authorization: token d197e569446aab7b3b39523784448bf5c14ec224' ${environmentRepo}/${serviceName}/${serviceName} 2> /dev/null)
 fi
 
 environment=$(echo "$envFileContent" | sed 's/\r$//' | awk -F " " '{print "--env "$1"="$2}' ORS=' ')
@@ -25,6 +25,9 @@ echo "Environment: $environment"
 
 docker service rm ${serviceName}
 docker service create --network default_network --replicas 1 --name $serviceName $environment ${dockerRepoHost}/${serviceName}:${tag}
+echo "Wait 30 sec"
+sleep 30
+timeout 120 docker service logs $serviceName
 }
 
 VersionScenario() {

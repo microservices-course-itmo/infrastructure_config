@@ -25,7 +25,7 @@
           <description>Адрес репозитория с файлами, в которых содержатся переменные окружения для сервисов. В случае выбора &quot;Custom&quot; следует загрузить файл в поле ниже вручную</description>
           <choices class="java.util.Arrays$ArrayList">
             <a class="string-array">
-              <string>https://raw.githubusercontent.com/valtornist99/test-env/master</string>
+              <string>https://raw.githubusercontent.com/microservices-course-itmo/environment/master</string>
               <string>Custom</string>
             </a>
           </choices>

@@ -5,7 +5,9 @@ cd "$(dirname "$0")"
 dockerRepoHost=10.11.0.43:5000
 
 jenkinsIp=127.0.0.1
-adminPass=OozeMancer1^^^1
+adminPass=${JENKINS_PASSWORD}
+
+sed -i "s#ARTIFACTORY_PASSWORD#${ARTIFACTORY_PASSWORD}#g" jenkins-home/settings.xml
 
 mkdir /mounts/jenkins/home
 chown -R 1030 /mounts/jenkins/
@@ -13,7 +15,11 @@ chown -R 1030 /mounts/jenkins/
 firewall-cmd --zone=trusted --add-port=8090/tcp --permanent
 firewall-cmd --reload
 
-#docker build -t jenkins .
+imageExist=$(docker image inspect jenkins | grep "Error: No such image")
+if [ "$imageExist" != "" ]
+then
+docker build -t jenkins .
+fi
 
 initPassword=$(docker run --name jenkins --network=j-a-net --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /mounts/jenkins/home:/home -e DOCKER_REPO_HOST=${dockerRepoHost} -p 8090:8090 jenkins 2>&1 | grep -m1 -A2 "Please use the following password to proceed to installation:" | (tail -n 1 && docker stop jenkins > /dev/null))
 echo "Password: $initPassword"
