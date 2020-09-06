@@ -2,7 +2,8 @@
 
 cd "$(dirname "$0")"
 
-dockerRepoHost=10.11.0.43:5000
+dockerRepoHost=${DOCKER_REPO_HOST}
+githubToken=${GITHUB_TOKEN}
 
 jenkinsIp=127.0.0.1
 adminPass=${JENKINS_PASSWORD}
@@ -21,7 +22,7 @@ then
 docker build -t jenkins .
 fi
 
-initPassword=$(docker run --name jenkins --network=j-a-net --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /mounts/jenkins/home:/home -e DOCKER_REPO_HOST=${dockerRepoHost} -p 8090:8090 jenkins 2>&1 | grep -m1 -A2 "Please use the following password to proceed to installation:" | (tail -n 1 && docker stop jenkins > /dev/null))
+initPassword=$(docker run --name jenkins --network=j-a-net --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /mounts/jenkins/home:/home -e DOCKER_REPO_HOST=${dockerRepoHost} -e GITHUB_TOKEN=${githubToken} -p 8090:8090 jenkins 2>&1 | grep -m1 -A2 "Please use the following password to proceed to installation:" | (tail -n 1 && docker stop jenkins > /dev/null))
 echo "Password: $initPassword"
 
 docker start jenkins > /dev/null

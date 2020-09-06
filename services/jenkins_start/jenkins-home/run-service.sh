@@ -6,7 +6,7 @@ versionOrBranch=$2
 environmentRepo=$3
 
 dockerRepoHost=${DOCKER_REPO_HOST}
-
+githubToken=${GITHUB_TOKEN}
 
 StartService() {
 tag=$1
@@ -17,7 +17,7 @@ then
 envFileContent=$(cat /var/jenkins_home/workspace/test/environment/service-env)
 else
 echo "Environment repository: $environmentRepo"
-envFileContent=$(curl -H 'Authorization: token d197e569446aab7b3b39523784448bf5c14ec224' ${environmentRepo}/${serviceName}/${serviceName} 2> /dev/null)
+envFileContent=$(curl -H "Authorization: token ${githubToken}" ${environmentRepo}/${serviceName}/${serviceName} 2> /dev/null)
 fi
 
 environment=$(echo "$envFileContent" | sed 's/\r$//' | awk -F " " '{print "--env "$1"="$2}' ORS=' ')
