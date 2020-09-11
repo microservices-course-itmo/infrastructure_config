@@ -14,7 +14,7 @@ tag=$1
 envFileContent=""
 if [ "$environmentRepo" == "Custom" ]
 then
-envFileContent=$(cat /var/jenkins_home/workspace/test/environment/service-env)
+envFileContent=$(cat /var/jenkins_home/workspace/${serviceName}/environment/service-env)
 else
 echo "Environment repository: $environmentRepo"
 envFileContent=$(curl -H "Authorization: token ${githubToken}" ${environmentRepo}/${serviceName}/${serviceName} 2> /dev/null)
