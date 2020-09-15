@@ -45,6 +45,12 @@ create_endpoints = [
 ]
 
 
+# проксируем запросы в сокет докера
+# запрещаем конкректные эндпоинты (см. create_endpoints)
+#
+# данные которые приходят на данный сокет (обычный payload в http формате)
+# пример здесь https://docs.docker.com/engine/api/v1.24/
+
 def listenToClient(conn, addr):
     datagram = recvall(conn)
 
