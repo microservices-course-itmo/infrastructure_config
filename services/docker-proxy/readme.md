@@ -8,11 +8,11 @@
 
 ## использование
 
-`export DOCKER_HOST="unix:///tmp/docker-admin.sock"`
+`export DOCKER_HOST="unix:///tmp/docker-proxy.sock"`
 
 или
 
-`sudo dockerd -H unix:///tmp/docker-admin.sock`
+`sudo dockerd -H unix:///tmp/docker-proxy.sock`
 
 ## пример с использованием docker cli
 
