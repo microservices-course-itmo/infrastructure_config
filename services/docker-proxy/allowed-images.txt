@@ -1,0 +1,15 @@
+docker.bintray.io/jfrog/artifactory-oss
+grafana/grafana
+jenkins/jenkins
+jenkins
+bitnami/kafka
+elasticsearch
+logstash
+kibana
+docker.elastic.co/elasticsearch/elasticsearch
+docker.elastic.co/kibana/kibana
+docker.elastic.co/logstash/logstash
+postgres
+prom/prometheus
+bitnami/zookeeper
+registry
