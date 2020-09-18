@@ -108,7 +108,7 @@ def image_exists(name):
 
 
 def allowed_command(cmd):
-    if len(cmd) < 1 or len(cmd) > 3 or cmd[0] != "ls":
+    if (len(cmd) >= 1 and len(cmd) <= 3) and cmd[0] == "ls":
         return True
     else:
         return None
