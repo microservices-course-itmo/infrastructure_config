@@ -98,7 +98,6 @@ def image_exists(name):
     res = recvall(docker_server)
     (headers, body) = parse_http_packet(res)
 
-    print(body)
     json_body = json.loads(body)
 
     if len(json_body) > 0:
@@ -108,7 +107,9 @@ def image_exists(name):
 
 
 def allowed_command(cmd):
-    if (len(cmd) >= 1 and len(cmd) <= 3) and cmd[0] == "ls":
+    # либо команда не передана
+    # либо передана, но минимум 3 параметра и ls в качестве основной команды
+    if len(cmd) == 0 or (len(cmd) >= 1 and len(cmd) <= 3 and cmd[0] == "ls"):
         return True
     else:
         return None
@@ -159,6 +160,33 @@ def listenToClient(conn, addr):
             conn.send(you_are_not_allowed)
             conn.close()
             return
+
+        if not image_exists(image):
+            print('not allowed')
+            conn.send(you_are_not_allowed)
+            conn.close()
+            return
+
+    # обработчик на создание сервиса
+    is_service_create = re.search("\/services\/create", endpoint)
+    if is_service_create:
+        print('is service create')
+        json_body = json.loads(body)
+        spec = json_body['TaskTemplate']['ContainerSpec']
+        # cmd = []
+        # if "Args" in spec:
+        #     cmd = spec["Args"] or []
+
+        image = spec['Image']
+
+        # print("cmd ", cmd)
+        print("image ", image)
+
+        # if not allowed_command(cmd):
+        #     print('not allowed')
+        #     conn.send(you_are_not_allowed)
+        #     conn.close()
+        #     return
 
         if not image_exists(image):
             print('not allowed')
