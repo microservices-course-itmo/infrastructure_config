@@ -201,6 +201,24 @@ def listenToClient(conn, addr):
     datagram_res = recv_timeout(docker_server)
     (headers, body) = parse_http_packet(datagram_res)
 
+    # обработчик на вольюмы (скрываем настройки)
+    is_inspect_volume = re.search("\/volumes\/.+?\s", endpoint)
+    if is_inspect_volume:
+        new_body = json.loads(body)
+
+        # скрываем настройки
+        if new_body['Options'] is not None:
+            if "password" in new_body['Options']:
+                del new_body['Options']['password']
+
+        new_headers = filter(lambda x: "Content-Length" not in x, headers)
+
+        str_headers = "\r\n".join(new_headers)
+        str_body = json.dumps(new_body)
+
+        # создаем новый пакет со скрытыми настройками
+        datagram_res = (str_headers + "\r\n\r\n" + str_body).encode('utf8')
+
     print("<-- (outgoing)")
     for h in headers:
         print(h)
