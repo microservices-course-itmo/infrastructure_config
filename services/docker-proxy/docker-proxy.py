@@ -205,7 +205,11 @@ def listenToClient(conn, addr):
     is_inspect_volume = re.search("\/volumes\/.+?\s", endpoint)
     if is_inspect_volume:
         new_body = json.loads(body)
-        new_body['Options'] = None  # скрываем настройки
+
+        # скрываем настройки
+        if new_body['Options'] is not None:
+            if "password" in new_body['Options']:
+                del new_body['Options']['password']
 
         new_headers = filter(lambda x: "Content-Length" not in x, headers)
 
