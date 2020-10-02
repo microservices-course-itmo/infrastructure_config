@@ -10,7 +10,7 @@
     "status" : "enabled",
     "lastLoginTime" : 1601641228331,
     "lastLoginIp" : "172.18.0.1",
-    "password" : "bcrypt$$2a$08$e5.mXYsstrQnUSR3OzJtc.OURtfG1ObJQlYELgvIMCsAdm9ibGluu",
+    "password" : "bcrypt$#ARTIFACTORY_ADMIN_PASSWORD",
     "allowedIps" : [ "127.0.0.1" ],
     "created" : 1601216196329,
     "modified" : 1601216920604,
