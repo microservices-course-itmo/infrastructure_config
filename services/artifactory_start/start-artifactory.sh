@@ -3,8 +3,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 echo ${DIR}
 mkdir -p /mounts/artifactory
 chown -R 1030 /mounts/
-yum install curl at
-yum provides \*bin/htpasswd
+yum install curl at epel-release httpd-tools
+
 systemctl start atd
 ENCR_ARTIFACTORY_ADMIN_PASSWORD="$( htpasswd -bnBC 8 "" ${ARTIFACTORY_ADMIN_PASSWORD} | tr -d ':\n' | sed 's/$2y/$2a/' )"
 sed "s,#ARTIFACTORY_ADMIN_PASSWORD,${ENCR_ARTIFACTORY_ADMIN_PASSWORD}," ${DIR}/base/etc/access.bootstrap.json.temp > ${DIR}/base/etc/access.bootstrap.json
