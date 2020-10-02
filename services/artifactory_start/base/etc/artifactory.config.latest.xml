@@ -3,7 +3,7 @@
     <offlineMode>false</offlineMode>
     <helpLinksEnabled>true</helpLinksEnabled>
     <fileUploadMaxSizeMb>100</fileUploadMaxSizeMb>
-    <revision>1</revision>
+    <revision>2</revision>
     <dateFormat>dd-MM-yy HH:mm:ss z</dateFormat>
     <addons>
         <showAddonsInfo>true</showAddonsInfo>
