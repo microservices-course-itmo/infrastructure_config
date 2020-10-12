@@ -60,16 +60,16 @@ isItVersion=$(echo $versionOrBranch | grep -E '^([0-9]+\.)*[0-9]+$')
 
 if [ "$isItVersion" != "" ]
 then
-# check if contains letter as well -> branch entered as well
-isItVersionAndBranch=$(echo $versionOrBranch | grep -E '^[a-zA-Z]*$')
+echo "Version number is entered"
+VersionScenario $versionOrBranch
+else
+# check if contains version-alike sequence
+isItVersionAndBranch=$(echo $versionOrBranch | grep -E '([0-9]+\.)+[0-9]+')
 if [ "$isItVersionAndBranch" != ""]
 then
   echo "Enter version number OR branch name, not both"
   exit 1
 fi
-echo "Version number is entered"
-VersionScenario $versionOrBranch
-else
 echo "Branch name is entered"
 BranchScenario $versionOrBranch
 fi
