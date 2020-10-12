@@ -63,6 +63,13 @@ then
 echo "Version number is entered"
 VersionScenario $versionOrBranch
 else
+# check if contains version-alike sequence
+isItVersionAndBranch=$(echo $versionOrBranch | grep -E '([0-9]+\.)+[0-9]+')
+if [ "$isItVersionAndBranch" != ""]
+then
+  echo "Enter version number OR branch name, not both"
+  exit 1
+fi
 echo "Branch name is entered"
 BranchScenario $versionOrBranch
 fi
@@ -72,4 +79,3 @@ echo "Start"
 echo "Service: $serviceName"
 ChooseScenario
 echo "Finish"
-
