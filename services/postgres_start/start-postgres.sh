@@ -20,4 +20,4 @@ docker exec -it $( docker ps -f name=postgres -q ) bash -c '(echo -e "0 0 * * * 
 
 docker exec -it $( docker ps -f name=postgres -q ) bash -c 'cron'
 
-
+exit
