@@ -13,4 +13,4 @@ chmod u+x services/*_start/start-*.sh
 ./services/postgres_start/start-*.sh
 ./services/prometheus_start/start-*.sh
 ./services/grafana_start/start-*.sh
-
+./services/mongo_start/start-*.sh
