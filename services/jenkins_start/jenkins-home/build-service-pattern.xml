@@ -30,7 +30,7 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>./validate-build-attributes.sh && mvn -s /home/settings.xml clean deploy</command>
+      <command>/home/validate-build-attributes.sh &amp;&amp; mvn -s /home/settings.xml clean deploy</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>
