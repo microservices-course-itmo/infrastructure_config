@@ -75,3 +75,4 @@ mailer:1.32
 pipeline-stage-view:2.14
 pipeline-rest-api:2.14
 ant:1.11
+configuration-as-code
