@@ -37,3 +37,6 @@ echo "$branchesXml"
 
 cat build-service-pattern.xml | sed "s#GITHUB_REPO#${githubRepoXml}#g" | sed "s#BRANCHES#${branchesXml}#g" | java -jar jenkins-cli.jar -s http://${jenkinsIp}:8090 -webSocket -auth admin:${adminPass} create-job ${serviceName}/build-api
 
+if [[ -z $(grep "api $githubRepo" list-jobs.txt) ]]; then
+    echo "api $githubRepo $password" >> list-jobs.txt
+fi
