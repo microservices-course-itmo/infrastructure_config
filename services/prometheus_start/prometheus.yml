@@ -51,6 +51,7 @@ scrape_configs:
           - 'tasks.catalog-service'
           - 'tasks.deployment-service'
           - 'tasks.recommendation-service'
+          - 'tasks.api-gateway'
         type: 'A'
         port: 8080
 
