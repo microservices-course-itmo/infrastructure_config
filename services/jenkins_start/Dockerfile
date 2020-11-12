@@ -17,7 +17,8 @@ RUN apt update &&\
 apt install -y maven &&\ 
 apt install -y git &&\
 apt install -y jq &&\
-apt install -y libxml2-utils
+apt install -y libxml2-utils &&\
+apt install -y libxml-xpath-perl
 
 
 ENV JENKINS_OPTS=--httpPort=8090

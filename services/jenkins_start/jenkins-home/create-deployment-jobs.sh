@@ -40,3 +40,6 @@ echo "$serviceNameXml"
 cat build-service-pattern.xml | sed "s#GITHUB_REPO#${githubRepoXml}#g" | sed "s#BRANCHES#${branchesXml}#g" | java -jar jenkins-cli.jar -s http://${jenkinsIp}:8090 -webSocket -auth admin:${adminPass} create-job ${serviceName}/build-service
 cat run-service-pattern.xml | sed "s#SERVICE_NAME#${serviceNameXml}#g" | java -jar jenkins-cli.jar -s http://${jenkinsIp}:8090 -webSocket -auth admin:${adminPass} create-job ${serviceName}/run-service
 
+if [[ -z $(grep "deployment $githubRepo" list-jobs.txt) ]]; then
+    echo "deployment $githubRepo $password" >> list-jobs.txt
+fi

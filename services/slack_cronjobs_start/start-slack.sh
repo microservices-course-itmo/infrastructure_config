@@ -7,4 +7,4 @@ chmod +x $DIR/scripts/*
 mkdir -p /etc/slack
 cp -r "$DIR/scripts/." "/etc/slack/"
 
-( crontab -l ; cat cron-jobs ) | crontab -
+( crontab -l ; cat $DIR/cron-jobs ) | crontab -

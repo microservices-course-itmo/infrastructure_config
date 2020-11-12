@@ -8,9 +8,11 @@ githubToken=${GITHUB_TOKEN}
 jenkinsIp=127.0.0.1
 adminPass=${JENKINS_PASSWORD}
 
+yum install -y wget
+
 sed -i "s#ARTIFACTORY_PASSWORD#${ARTIFACTORY_PASSWORD}#g" jenkins-home/settings.xml
 
-mkdir /mounts/jenkins/home
+mkdir -p /mounts/jenkins/home
 chown -R 1030 /mounts/jenkins/
 
 firewall-cmd --zone=trusted --add-port=8090/tcp --permanent
@@ -44,3 +46,7 @@ cp -r jenkins-home/* /mounts/jenkins/home
 chmod u+x /mounts/jenkins/home/*.sh
 
 java -jar jenkins-cli.jar -s http://${jenkinsIp}:8090/ -webSocket -auth admin:${adminPass} restart
+
+sleep 60
+
+./restore-jobs.sh
