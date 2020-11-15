@@ -25,6 +25,6 @@ echo "{ \"insecure-registries\":[\"${dockerRepoHost}\"] }" > /etc/docker/daemon.
 systemctl restart docker
 
 #Сеть для docker swarm
-docker network create -d overlay default_network
+docker network create -d overlay --attachable default_network
 #Сеть для jenkins, jfrog artifactory, docker registry
 docker network create j-a-net
