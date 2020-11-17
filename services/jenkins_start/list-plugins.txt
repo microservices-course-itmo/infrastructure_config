@@ -75,3 +75,4 @@ mailer                             Mailer Plugin                                
 pipeline-stage-view                Pipeline: Stage View Plugin                                      2.14
 pipeline-rest-api                  Pipeline: REST API Plugin                                        2.14
 ant                                Ant Plugin                                                       1.11
+thinBackup                         ThinBackup                                                       1.10
