@@ -2,7 +2,9 @@
 
 cd "$(dirname "$0")"
 
-dockerRepoHost=${DOCKER_REPO_HOST}
+dockerRepoHost=0.0.0.0:25001
+dockerHost=proxy-serv:22376
+dockerManagerIp=10.11.0.43
 githubToken=${GITHUB_TOKEN}
 
 jenkinsIp=127.0.0.1
@@ -12,41 +14,37 @@ yum install -y wget
 
 sed -i "s#ARTIFACTORY_PASSWORD#${ARTIFACTORY_PASSWORD}#g" jenkins-home/settings.xml
 
-mkdir -p /mounts/jenkins/home
-chown -R 1030 /mounts/jenkins/
+mkdir -p /etc/docker/shared/jenkins/home
 
 firewall-cmd --zone=trusted --add-port=8090/tcp --permanent
 firewall-cmd --reload
 
-imageExist=$(docker image inspect jenkins | grep "Error: No such image")
-if [ "$imageExist" != "" ]
-then
-docker build -t jenkins .
-fi
+docker build -t ${dockerRepoHost}/jenkins .
+docker push ${dockerRepoHost}/jenkins
 
-initPassword=$(docker run --name jenkins --network=j-a-net --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /mounts/jenkins/home:/home -e DOCKER_REPO_HOST=${dockerRepoHost} -e GITHUB_TOKEN=${githubToken} -p 8090:8090 jenkins 2>&1 | grep -m1 -A2 "Please use the following password to proceed to installation:" | (tail -n 1 && docker stop jenkins > /dev/null))
-echo "Password: $initPassword"
+ docker service create --name jenkins --network=default_network \
+	 --mount volume-driver=vieux/sshfs,source=jenkins,target=/home,volume-opt=sshcmd=root@${dockerManagerIp}:/etc/docker/shared/jenkins,volume-opt=allow_other,volume-opt=password=${ROOT_PASSWORD} \
+	 -e DOCKER_REPO_HOST=${dockerRepoHost} -e DOCKER_HOST=${dockerHost} -e GITHUB_TOKEN=${githubToken} -p 8090:8090 ${dockerRepoHost}/jenkins
 
-docker start jenkins > /dev/null
-sleep 60
-wget --continue --content-on-error --retry-connrefused --tries=10 --waitretry=120 http://${jenkinsIp}:8090/jnlpJars/jenkins-cli.jar
-cp jenkins-cli.jar jenkins-home/jenkins-cli.jar
-echo 'jenkins.model.Jenkins.instance.securityRealm.createAccount("admin", '\"${adminPass}\"')' | java -jar jenkins-cli.jar -s http://${jenkinsIp}:8090 -auth admin:${initPassword} -noKeyAuth groovy = –
+# sleep 60
+#wget --continue --content-on-error --retry-connrefused --tries=10 --waitretry=120 http://${jenkinsIp}:8090/jnlpJars/jenkins-cli.jar
+#cp jenkins-cli.jar jenkins-home/jenkins-cli.jar
+#echo 'jenkins.model.Jenkins.instance.securityRealm.createAccount("admin", '\"${adminPass}\"')' | java -jar jenkins-cli.jar -s http://${jenkinsIp}:8090 -auth admin:${tempPass} -noKeyAuth groovy = –
 
-sleep 10
-cat list-plugins.txt | awk '{print $1}' | while read plugin_name; do echo $plugin_name; java -jar jenkins-cli.jar -s http://${jenkinsIp}:8090 -webSocket -auth admin:${adminPass} install-plugin $plugin_name < /dev/null > /dev/null; done
+#sleep 10
+#cat list-plugins.txt | awk '{print $1}' | while read plugin_name; do echo $plugin_name; java -jar jenkins-cli.jar -s http://${jenkinsIp}:8090 -webSocket -auth admin:${adminPass} install-plugin $plugin_name < /dev/null > /dev/null; done
 
 #echo 'jenkins.model.Jenkins.instance.securityRealm.createAccount("main", '\"${adminPass}\"')' | java -jar jenkins-cli.jar -s http://${jenkinsIp}:8090 -auth admin:${adminPass} -noKeyAuth groovy = –
 #cat admin-folder-job.xml | java -jar jenkins-cli.jar -s http://${jenkinsIp}:8090 -webSocket -auth admin:${adminPass} create-job main
-cat create-deployment-jobs.xml | java -jar jenkins-cli.jar -s http://${jenkinsIp}:8090 -webSocket -auth admin:${adminPass} create-job create-deployment-jobs
-cat create-api-build-job.xml | java -jar jenkins-cli.jar -s http://${jenkinsIp}:8090 -webSocket -auth admin:${adminPass} create-job create-api-build-job
+#cat create-deployment-jobs.xml | java -jar jenkins-cli.jar -s http://${jenkinsIp}:8090 -webSocket -auth admin:${adminPass} create-job create-deployment-jobs
+#cat create-api-build-job.xml | java -jar jenkins-cli.jar -s http://${jenkinsIp}:8090 -webSocket -auth admin:${adminPass} create-job create-api-build-job
 
-echo "$adminPass" > jenkins-home/adminPass.txt
-cp -r jenkins-home/* /mounts/jenkins/home
-chmod u+x /mounts/jenkins/home/*.sh
+#echo "$adminPass" > jenkins-home/adminPass.txt
+#cp -r jenkins-home/* /etc/docker/shared/jenkins/home
+#chmod u+x /etc/docker/shared/jenkins/home/*.sh
 
-java -jar jenkins-cli.jar -s http://${jenkinsIp}:8090/ -webSocket -auth admin:${adminPass} restart
+# java -jar jenkins-cli.jar -s http://${jenkinsIp}:8090/ -webSocket -auth admin:${adminPass} restart
 
-sleep 60
+#sleep 60
 
-./restore-jobs.sh
+#./restore-jobs.sh
