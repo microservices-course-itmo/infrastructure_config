@@ -40,6 +40,18 @@ scrape_configs:
     dns_sd_configs:
       - names:
           - 'tasks.demo-service'
+          - 'tasks.am-parser-service'
+          - 'tasks.simple-parser-service'
+          - 'tasks.winestyle-parser-service'
+          - 'tasks.winelab-parser-service'
+          - 'tasks.lenta-parser-service'
+          - 'tasks.crossroad-parser-service'
+          - 'tasks.user-service'
+          - 'tasks.notification-service'
+          - 'tasks.catalog-service'
+          - 'tasks.deployment-service'
+          - 'tasks.recommendation-service'
+          - 'tasks.api-gateway'
         type: 'A'
         port: 8080
 
