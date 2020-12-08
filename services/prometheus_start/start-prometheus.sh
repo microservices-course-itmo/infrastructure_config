@@ -2,9 +2,10 @@
 
 cd "$(dirname "$0")"
 
-dockerManagerIp=${DOCKER_MANAGER_IP}
+#mkdir -p /etc/docker/shared/prometheus
+cp -u prometheus.yml /etc/docker/shared/prometheus/prometheus.yml
 
-mkdir -p /etc/docker/shared/prometheus
-cp prometheus.yml /etc/docker/shared/prometheus/prometheus.yml
-
-docker service create --name prometheus --network default_network --replicas 1 --mount volume-driver=vieux/sshfs,source=prometheus,target=/etc/prometheus,volume-opt=sshcmd=root@${dockerManagerIp}:/etc/docker/shared/prometheus,volume-opt=allow_other,volume-opt=password=${ROOT_PASSWORD} prom/prometheus
+docker service create --name prometheus \
+--network default_network --replicas 1 \
+--mount type=bind,source=/etc/docker/shared/prometheus,destination=/etc/prometheus \
+prom/prometheus

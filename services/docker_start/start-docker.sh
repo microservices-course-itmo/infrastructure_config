@@ -27,4 +27,5 @@ systemctl restart docker
 #Сеть для docker swarm
 docker network create -d overlay --attachable default_network
 #Сеть для jenkins, jfrog artifactory, docker registry
+echo j-a-net is dedpreciated, remove if it's useless
 docker network create j-a-net
