@@ -1,0 +1,12 @@
+artifactory
+registry
+jenkins
+logstash
+elasticsearch
+kibana
+zookeeper
+kafka
+postgres
+prometheus
+grafana
+mongo
