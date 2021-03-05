@@ -1,0 +1,19 @@
+version: "3.2"
+
+services:
+  registry:
+    image: registry:2.7.1
+    volumes:
+      - /etc/docker/shared/registry:/var/lib/registry
+    deploy:
+      replicas: 1
+    ports:
+      - "8081:8081"
+      - "8082:8082"
+    environment:
+      REGISTRY_STORAGE_DELETE_ENABLED: "true"
+
+networks:
+  default:
+    external:
+      name: default_network
