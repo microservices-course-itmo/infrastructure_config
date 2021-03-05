@@ -1,0 +1,42 @@
+version: "3.2"
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:$ELK_VERSION
+    volumes:
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - /etc/docker/shared/elasticsearch:/usr/share/elasticsearch/data
+    deploy:
+      replicas: 1
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: $ELASTIC_PASSWORD
+      discovery.type: single-node
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:$ELK_VERSION
+    volumes:
+      - ./logstash/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+    deploy:
+      replicas: 1
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:$ELK_VERSION
+    volumes:
+      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+    deploy:
+      replicas: 1
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
+networks:
+  default:
+    external:
+      name: default_network
