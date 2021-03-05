@@ -1,0 +1,31 @@
+version: "3.2"
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - /etc/docker/shared/prometheus:/prometheus
+    deploy:
+      replicas: 1
+    command:
+      - "-config.file=/etc/prometheus/prometheus.yml"
+      - "-storage.local.path=/prometheus"
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    volumes:
+      - /etc/docker/shared/grafana:/var/lib/grafana
+    deploy:
+      replicas: 1
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+networks:
+  default:
+    external:
+      name: default_network
