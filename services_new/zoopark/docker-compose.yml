@@ -1,0 +1,25 @@
+version: "3.2"
+
+services:
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    volumes:
+      - /etc/docker/shared/zookeeper:/bitnami/zookeeper
+    deploy:
+      replicas: 1
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: "yes"
+
+  kafka:
+    image: bitnami/kafka:latest
+    env_file:
+      - ./.env
+    deploy:
+      replicas: 1
+    depends_on:
+      - zookeeper
+
+networks:
+  default:
+    external:
+      name: default_network
