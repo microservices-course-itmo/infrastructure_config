@@ -1,0 +1,39 @@
+version: "3.2"
+
+services:
+  docker-reverse-proxy-1:
+    image: nginx
+    volumes:
+      - ./docker-reverse-proxy.conf:/etc/nginx/nginx.conf
+    deploy:
+      replicas: 1
+
+  # docker-reverse-proxy-2:
+  #   image: nginx
+  #   volumes:
+  #     - ./docker-reverse-proxy.conf:/etc/nginx/nginx.conf
+  #   deploy:
+  #     replicas: 1
+
+  # docker-reverse-proxy-3:
+  #   image: nginx
+  #   volumes:
+  #     - ./docker-reverse-proxy.conf:/etc/nginx/nginx.conf
+  #   deploy:
+  #     replicas: 1
+
+  docker-load-balancer:
+    image: nginx
+    volumes:
+      - ./docker-load-balancer.conf:/etc/nginx/nginx.conf
+    deploy:
+      replicas: 1
+    depends_on:
+      - docker-reverse-proxy-1
+      # - docker-reverse-proxy-2
+      # - docker-reverse-proxy-3
+
+networks:
+  default:
+    external:
+      name: default_network

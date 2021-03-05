@@ -1,31 +1,26 @@
 #!/bin/bash
 
-dockerManagerIp=${DOCKER_MANAGER_IP}
-dockerRepoHost=${DOCKER_REPO_HOST}
+test -e ./.env || { echo ".env not found" ; exit 1; }
+
+export $(xargs <.env)
 
 yum check-update
 curl -fsSL https://get.docker.com/ | sh
+
 systemctl start docker
 systemctl status docker
 
-docker swarm init --advertise-addr ${dockerManagerIp}
-
-firewall-cmd --zone=public --add-masquerade --permanent
-firewall-cmd --add-port=2376/tcp --permanent
-firewall-cmd --add-port=2377/tcp --permanent
-firewall-cmd --add-port=7946/tcp --permanent
-firewall-cmd --add-port=7946/udp --permanent
-firewall-cmd --add-port=4789/udp --permanent
-firewall-cmd --reload
-
+docker swarm init --advertise-addr ${DOCKER_MANAGER_IP}
 docker plugin install --grant-all-permissions vieux/sshfs
 
-echo "{ \"insecure-registries\":[\"${dockerRepoHost}\"] }" > /etc/docker/daemon.json
+echo "{
+  \"insecure-registries\":[\"${DOCKER_REPO_HOST}\"],
+  \"metrics-addr\" : \"${METRIC_ADDR}\",
+  \"experimental\" : true
+}" >> /etc/docker/daemon.json
+
 
 systemctl restart docker
 
-#Сеть для docker swarm
+# Сеть для docker swarm
 docker network create -d overlay --attachable default_network
-#Сеть для jenkins, jfrog artifactory, docker registry
-echo j-a-net is dedpreciated, remove if it's useless
-docker network create j-a-net
