@@ -2,25 +2,26 @@ version: "3.2"
 
 services:
   docker-reverse-proxy-1:
-    image: nginx
+    image: tecnativa/docker-socket-proxy
     volumes:
-      - ./docker-reverse-proxy.conf:/etc/nginx/nginx.conf
+      - /var/run/docker.sock:/var/run/docker.sock
     deploy:
-      replicas: 1
+      placement:
+        constraints:
+          - "node.role==manager"
+    env_file:
+      - ./.env-reverse-docker
 
-  # docker-reverse-proxy-2:
-  #   image: nginx
-  #   volumes:
-  #     - ./docker-reverse-proxy.conf:/etc/nginx/nginx.conf
-  #   deploy:
-  #     replicas: 1
-
-  # docker-reverse-proxy-3:
-  #   image: nginx
-  #   volumes:
-  #     - ./docker-reverse-proxy.conf:/etc/nginx/nginx.conf
-  #   deploy:
-  #     replicas: 1
+  docker-reverse-proxy-2:
+    image: tecnativa/docker-socket-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
+    env_file:
+      - ./.env-reverse-docker
 
   docker-load-balancer:
     image: nginx
@@ -30,7 +31,7 @@ services:
       replicas: 1
     depends_on:
       - docker-reverse-proxy-1
-      # - docker-reverse-proxy-2
+      - docker-reverse-proxy-2
       # - docker-reverse-proxy-3
 
 networks:
