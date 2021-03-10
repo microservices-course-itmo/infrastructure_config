@@ -34,6 +34,15 @@ services:
       - docker-reverse-proxy-2
       # - docker-reverse-proxy-3
 
+  registry-reverse-proxy:
+    image: nginx
+    volumes:
+      - ./registry-reverse-proxy.conf:/etc/nginx/nginx.conf
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
+
 networks:
   default:
     external:
