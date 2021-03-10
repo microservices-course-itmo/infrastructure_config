@@ -13,20 +13,17 @@ chmod u+x services/*_start/start-*.sh
 ./services/docker_start/start-*.sh
 ./services/gluster_start/start-*.sh
 
+docker stack deploy -c ./services_new/proxy/docker-compose.yml proxies
 
-# ./services/registry_start/start-*.sh
+docker stack deploy -c ./services_new/registry/docker-compose.yml registry
+docker stack deploy -c ./services_new/artifactory/docker-compose.yml artifactory
 
-# ./services/artifactory_start/start-*.sh
 ./services/jenkins_start/start-*.sh
 
-# ./services/zookeeper_start/start-*.sh
-# ./services/kafka_start/start-*.sh
-
-# ./services/prometheus_start/start-*.sh
-# ./services/grafana_start/start-*.sh
+docker stack deploy -c ./services_new/zoopark/docker-compose.yml zoopark
+docker stack deploy -c ./services_new/monitoring/docker-compose.yml monitoring
 
 ./services/postgres_start/start-*.sh
-# ./services/mongo_start/start-*.sh
 
-# ./services/kibana_start/start-*.sh
-# ./services/logstash_start/start-*.sh
+docker stack deploy -c ./services_new/mongo/docker-compose.yml mongo
+docker stack deploy -c ./services_new/elk/docker-compose.yml elk
