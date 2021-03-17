@@ -20,5 +20,4 @@ firewall-cmd --permanent --zone=trusted --add-port=2375/tcp
 # registry ports
 firewall-cmd --zone=trusted --add-port=5000/tcp --permanent
 
-
 firewall-cmd --reload
