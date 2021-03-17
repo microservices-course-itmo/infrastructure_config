@@ -2,7 +2,7 @@ version: "3.2"
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:$ELK_VERSION
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
     volumes:
       - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
       - /etc/docker/shared/elasticsearch:/usr/share/elasticsearch/data
@@ -10,11 +10,12 @@ services:
       replicas: 1
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_USERNAME: $ELASTIC_USERNAME
       ELASTIC_PASSWORD: $ELASTIC_PASSWORD
       discovery.type: single-node
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:$ELK_VERSION
+    image: docker.elastic.co/logstash/logstash:7.8.0
     volumes:
       - ./logstash/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
       - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
@@ -22,15 +23,20 @@ services:
       replicas: 1
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_USERNAME: $ELASTIC_USERNAME
+      ELASTIC_PASSWORD: $ELASTIC_PASSWORD
     depends_on:
       - elasticsearch
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:$ELK_VERSION
+    image: docker.elastic.co/kibana/kibana:7.8.0
     volumes:
       - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
     deploy:
       replicas: 1
+    environment:
+      ELASTIC_USERNAME: $ELASTIC_USERNAME
+      ELASTIC_PASSWORD: $ELASTIC_PASSWORD
     ports:
       - "5601:5601"
     depends_on:
