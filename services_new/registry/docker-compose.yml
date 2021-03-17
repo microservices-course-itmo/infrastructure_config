@@ -7,9 +7,6 @@ services:
       - /etc/docker/shared/registry:/var/lib/registry
     deploy:
       replicas: 1
-    ports:
-      - "8081:8081"
-      - "8082:8082"
     environment:
       REGISTRY_STORAGE_DELETE_ENABLED: "true"
 
