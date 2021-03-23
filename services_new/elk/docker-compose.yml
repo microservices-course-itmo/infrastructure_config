@@ -23,8 +23,8 @@ services:
       replicas: 1
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-      ELASTIC_USERNAME: $ELASTIC_USERNAME
-      ELASTIC_PASSWORD: $ELASTIC_PASSWORD
+      ELASTICSEARCH_USERNAME: $ELASTIC_USERNAME
+      ELASTICSEARCH_PASSWORD: $ELASTIC_PASSWORD
     depends_on:
       - elasticsearch
 
@@ -34,11 +34,11 @@ services:
       - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
     deploy:
       replicas: 1
-    environment:
-      ELASTIC_USERNAME: $ELASTIC_USERNAME
-      ELASTIC_PASSWORD: $ELASTIC_PASSWORD
     ports:
       - "5601:5601"
+    environment:
+      ELASTICSEARCH_USERNAME: $ELASTIC_USERNAME
+      ELASTICSEARCH_PASSWORD: $ELASTIC_PASSWORD
     depends_on:
       - elasticsearch
 

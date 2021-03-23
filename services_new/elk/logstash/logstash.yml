@@ -10,5 +10,5 @@ pipeline.id: logstash_pipeline
 ## X-Pack security credentials
 #
 xpack.monitoring.enabled: true
-xpack.monitoring.elasticsearch.username: $ELASTIC_USERNAME
-xpack.monitoring.elasticsearch.password: $ELASTIC_PASSWORD
+xpack.monitoring.elasticsearch.username: ${ELASTICSEARCH_USERNAME}
+xpack.monitoring.elasticsearch.password: ${ELASTICSEARCH_PASSWORD}
