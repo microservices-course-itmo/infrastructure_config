@@ -23,6 +23,7 @@ mkdir -p /etc/docker/shared/mongo/db
 mkdir -p /etc/docker/shared/elasticsearch
 mkdir -p /etc/docker/shared/jenkins/home
 
+# chown -R 1030:1030 /etc/docker/shared/artifactory
 # chown -R 1001:1001 /etc/docker/shared/zookeeper
 # chown -R 1000:1000 /etc/docker/shared/prometheus
 # chown -R 472:1 /etc/docker/shared/grafana
