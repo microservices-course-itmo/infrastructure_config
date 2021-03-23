@@ -5,6 +5,8 @@ services:
     image: mongo
     volumes:
       - /etc/docker/shared/mongo/db:/data/db
+    env_file:
+      - ./.env
     deploy:
       replicas: 1
     ports:

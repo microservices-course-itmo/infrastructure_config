@@ -21,11 +21,15 @@ mkdir -p /etc/docker/shared/prometheus
 mkdir -p /etc/docker/shared/grafana
 mkdir -p /etc/docker/shared/mongo/db
 mkdir -p /etc/docker/shared/elasticsearch
+mkdir -p /etc/docker/shared/jenkins/home
 
 # chown -R 1001:1001 /etc/docker/shared/zookeeper
 # chown -R 1000:1000 /etc/docker/shared/prometheus
 # chown -R 472:1 /etc/docker/shared/grafana
 # chown -R 1000:1000 /etc/docker/shared/elasticsearch
+
+function compose_cfg { docker-compose -f ./$1/docker-compose.yml --env-file ./$1/.env config; }
+
 
 # ./services/docker_start/start-*.sh
 # ./services/gluster_start/start-*.sh
@@ -38,10 +42,10 @@ docker stack deploy --with-registry-auth -c ./services_new/artifactory/docker-co
 
 # ./services/jenkins_start/start-*.sh
 
-docker stack deploy --with-registry-auth -c ./services_new/zoopark/docker-compose.yml zoopark
+docker stack deploy --with-registry-auth -c ./services_new/kafka/docker-compose.yml kafka
 docker stack deploy --with-registry-auth -c ./services_new/monitoring/docker-compose.yml monitoring
 
 # ./services/postgres_start/start-*.sh
 
 docker stack deploy --with-registry-auth -c ./services_new/mongo/docker-compose.yml mongo
-docker stack deploy --with-registry-auth -c ./services_new/elk/docker-compose.yml elk 
+docker stack deploy --with-registry-auth -c  <(compose_cfg elk)  elk 
