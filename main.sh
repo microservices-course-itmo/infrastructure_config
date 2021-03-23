@@ -37,7 +37,6 @@ function compose_cfg { docker-compose -f ./$1/docker-compose.yml --env-file ./$1
 docker stack deploy -c ./services_new/registry/docker-compose.yml registry
 
 docker stack deploy --with-registry-auth -c ./services_new/proxy/docker-compose.yml proxies
-
 docker stack deploy --with-registry-auth -c ./services_new/artifactory/docker-compose.yml artifactory
 
 # ./services/jenkins_start/start-*.sh

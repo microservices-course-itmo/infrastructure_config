@@ -38,6 +38,8 @@ services:
     image: nginx
     volumes:
       - ./registry-reverse-proxy.conf:/etc/nginx/nginx.conf
+    ports:
+      - "5000:25000"
     deploy:
       placement:
         constraints:

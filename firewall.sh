@@ -26,5 +26,7 @@ firewall-cmd --zone=trusted --add-port=3000/tcp --permanent
 # jenkins ports
 firewall-cmd --zone=trusted --add-port=8080/tcp --permanent
 
+# registry ports
+firewall-cmd --zone=trusted --add-port=5000/tcp --permanent
 
 firewall-cmd --reload
