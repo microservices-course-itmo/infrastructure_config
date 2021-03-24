@@ -22,7 +22,7 @@
 │   └── .env
 ├── mongo @@@
 │   ├── docker-compose.yml
-│   └── .env (MONGO_INITDB_ROOT_PASWORD)
+│   └── .env (MONGO_INITDB_ROOT_PASSWORD)
 ├── monitoring
 │   ├── docker-compose.yml
 │   ├── .env
@@ -42,7 +42,7 @@
 ```bash
 ./firewall.sh
 ./install-docker.sh
-# ./start-docker.sh
+./start-docker.sh
 ./start-swarm.sh
 ./services_new/artifactory/set-password.sh
 ```
