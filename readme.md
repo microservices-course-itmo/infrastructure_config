@@ -41,7 +41,8 @@
 
 ```bash
 ./firewall.sh
-./start-docker.sh
+./install-docker.sh
+# ./start-docker.sh
 ./start-swarm.sh
 ./services_new/artifactory/set-password.sh
 ```

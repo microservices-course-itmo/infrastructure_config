@@ -19,7 +19,7 @@ chown -R 1000:1000 /etc/docker/shared/prometheus
 chown -R 472:1 /etc/docker/shared/grafana
 chown -R 1000:1000 /etc/docker/shared/elasticsearch
 
-function compose_cfg { docker-compose -f ./$1/docker-compose.yml --env-file ./$1/.env config; }
+function compose_cfg { docker-compose -f ./services_new/$1/docker-compose.yml --env-file ./$1/.env config; }
 
 # ./services/gluster_start/start-*.sh
 
