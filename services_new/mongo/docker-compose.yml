@@ -5,10 +5,11 @@ services:
     image: mongo
     volumes:
       - /etc/docker/shared/mongo/db:/data/db
-    env_file:
-      - ./.env
     deploy:
       replicas: 1
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $MONGO_INITDB_ROOT_USERNAME
+      MONGO_INITDB_ROOT_PASWORD: $MONGO_INITDB_ROOT_PASWORD
     ports:
       - "27017:27017"
 
