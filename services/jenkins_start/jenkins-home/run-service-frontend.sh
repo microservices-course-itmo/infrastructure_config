@@ -24,7 +24,7 @@ environment=$(echo "$envFileContent" | sed 's/\r$//' | awk -F " " '{print "--env
 echo "Environment: $environment"
 
 docker service rm ${serviceName}
-docker service create --network default_network --replicas 1 --limit-memory 2GB --name $serviceName $environment ${dockerRepoHost}/${serviceName}:${tag}
+docker service create --network default_network --replicas 1 -p 8085:3000 --name $serviceName $environment ${dockerRepoHost}/${serviceName}:${tag}
 echo "Wait 30 sec"
 sleep 30
 timeout 120 docker service logs $serviceName
