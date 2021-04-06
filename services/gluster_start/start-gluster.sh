@@ -2,6 +2,7 @@
 
 green="\033[32m"
 yellow="\033[33m"
+red="\033[31m"
 default="\033[0m"
 
 #Удаленная установка gluster на машину
@@ -22,6 +23,7 @@ ssh root@$node "systemctl enable glusterd"
 done
 
 #Тест для проверки установки gluster
+chmod +x ./tests/installedGluster.sh
 ./tests/./installedGluster.sh
 
 #Присоединить машину, на которой сейчас был установлен gluster, к gluster-пулу
@@ -32,7 +34,12 @@ gluster peer probe $node
 done < hosts.list
 
 #Тест для проверки присоединенности gluster
+chmod +x ./tests/peerProbe.sh
 ./tests/./peerProbe.sh
+
+#Создание volume. Рекомендуется данный скрипт запускать отдельно. Если есть полная уверенность в том, что данный скрипт отработает как надо - раскомментируйте 2 строки ниже.
+#chmod +x createVolumes.sh
+#./createVolumes.sh
 
 #Создать папки, к которым будут примонтированы volume
 for node in $(cat hosts.list);
@@ -46,4 +53,22 @@ do
 done
 
 #Тест для проверки наличия созданных папок
+chmod +x ./tests/mkdir.sh
 ./tests/./mkdir.sh
+
+#Подключить gluster volume к созданным папкам
+for node in $(cat hosts.list);
+do
+	echo -e $yellow"[NODE]"$default$node
+	for service in $(cat services.list);
+	do
+		volumeName=$(gluster volume list all | grep $service)
+		echo -e $green"[INFO]"$default"Mount "$volumeName" volume to /etc/docker/shared/"$service
+		ssh root@$node "mount.glusterfs sp10:/$volumeName /etc/docker/shared/$service"
+	done
+echo ""
+done
+
+#Тест для проверки примонтированных volume к папкам
+chmod +x ./tests/volumeCheck.sh
+./tests/./volumeCheck.sh
