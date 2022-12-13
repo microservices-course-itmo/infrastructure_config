@@ -2,7 +2,7 @@
 
 name=$1
 
-firewall-cmd --zone=trusted --change-interface=docker_gwbridge
+#firewall-cmd --zone=trusted --change-interface=docker_gwbridge
 firewall-cmd --permanent --zone=trusted --add-port=2375/tcp
 firewall-cmd --reload
 
